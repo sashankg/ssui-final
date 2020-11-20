@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
 
+import pages from './pagesReducer.js';
+import elements from './elementsReducer.js';
+
 export default combineReducers({
-    dummyReducer: () => 1,
+  pages,
+  elements,
 });
