@@ -2,18 +2,25 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { createSelector } from 'reselect';
 
 import Element from './Element.js';
 import { WorkspaceContext } from './Workspace.js';
 
+
 export default function Page({ id }) {
   const page = useSelector(state => state.pages.byId[id]);
-  const elements = useSelector(state => { 
-    return state.elements.allIds
-      .filter(elId => state.elements.byId[elId].page === id)
-      .map(elId => ({ ...state.elements.byId[elId],  id: elId })) 
-  });
-  const workspace = React.useContext(WorkspaceContext);
+
+  const elementsSelector = createSelector(
+    state => state.elements.allIds, 
+    state => state.elements.byId,
+    (ids, elements) => 
+      ids.filter(elId => elements[elId].page === id)
+        .map(elId => ({ ...elements[elId],  id: elId }))
+  );
+  const elements = useSelector(elementsSelector);
+
+  const workspace = useSelector(state => state.workspace);
 
   const ref = React.useRef();
   const dispatch = useDispatch();

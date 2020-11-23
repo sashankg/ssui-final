@@ -5,9 +5,7 @@ import { WorkspaceContext } from './Workspace.js';
 
 export default function Element({ element }) {
   const ref = React.useRef();
-
   const workspace = React.useContext(WorkspaceContext);
-
   const dispatch = useDispatch();
   return <Draggable 
     position={ { x: element.x, y: element.y } }
