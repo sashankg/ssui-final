@@ -1,7 +1,6 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
-import { WorkspaceContext } from './Workspace.js';
 import { createSelector } from 'reselect';
 import elementTypes from '../data/elementTypes.js'
 

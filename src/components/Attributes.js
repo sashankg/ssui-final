@@ -9,8 +9,6 @@ for(const key in elementTypes) {
   attributes[key] = Object.keys(elementTypes[key]).filter(x => x !== 'name');
 }
 
-console.log(attributes);
-
 function AttributeInput({ type, value, onChange }) {
   switch(type) {
     case AT.string:

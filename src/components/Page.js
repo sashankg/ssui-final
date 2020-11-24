@@ -5,7 +5,6 @@ import { useDrop } from 'react-dnd';
 import { createSelector } from 'reselect';
 
 import Element from './Element.js';
-import { WorkspaceContext } from './Workspace.js';
 
 
 export default function Page({ id }) {
@@ -29,16 +28,15 @@ export default function Page({ id }) {
   const ref = React.useRef();
   const dispatch = useDispatch();
 
-  const [{ dropResult }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: 'element',
     drop(item, monitor) {
       const { x, y } = monitor.getSourceClientOffset();
-      console.log(monitor);
       dispatch({ 
         type: 'ADD_ELEMENT',
         data: {
           type: item.tool,
-          x: (x - workspace.offset.x - 245) / workspace.scale - page.x,
+          x: (x - workspace.offset.x - 230) / workspace.scale - page.x,
           y: (y - workspace.offset.y) / workspace.scale - page.y,
           width: 50,
           height: 50,

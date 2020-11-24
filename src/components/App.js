@@ -19,7 +19,7 @@ function App() {
           <Col xs="auto" lg="auto">
             <Toolbox />
           </Col>
-          <Col>
+            <Col style={{ padding: 0 }}>
             <Workspace />
           </Col>
         </Row>

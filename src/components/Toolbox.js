@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, Form } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { useDrag } from 'react-dnd';
 import elementTypes from '../data/elementTypes.js'
 
@@ -8,7 +8,7 @@ import Attributes from './Attributes.js';
 const tools = Object.keys(elementTypes);
 
 function ToolboxItem({ tool }) {
-    const [collectedProps, drag] = useDrag({
+    const [, drag] = useDrag({
         item: { 
             type: 'element',
             tool,
@@ -20,7 +20,7 @@ function ToolboxItem({ tool }) {
 }
 
 export default function Toolbox() {
-    const [_, pageDrag] = useDrag({
+    const [, pageDrag] = useDrag({
         item: {
             type: 'page',
         }

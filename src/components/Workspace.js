@@ -4,15 +4,11 @@ import { useDrop } from 'react-dnd';
 
 import Page from './Page.js';
 
-var workspaceElement;
-
 const mouseState = {
   workspaceDown: 0,
   elementDown: 1,
   up: 2,
 }
-
-export const WorkspaceContext = React.createContext()
 
 export default function Workspace() {
   const pages = useSelector(state => state.pages);
@@ -21,7 +17,7 @@ export default function Workspace() {
   const [mouse, setMouse] = React.useState({ state: mouseState.up });
   const { offset, scale } = useSelector(state => state.workspace);
 
-  const [_, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: 'page',
     drop(item, monitor) {
       const { x, y } = monitor.getSourceClientOffset();
@@ -29,7 +25,7 @@ export default function Workspace() {
         type: 'ADD_PAGE',
         data: {
           type: item.tool,
-          x: (x - offset.x - 245) / scale,
+          x: (x - offset.x - 230) / scale,
           y: (y - offset.y) / scale,
         }
       })
@@ -38,10 +34,7 @@ export default function Workspace() {
 
   return <svg 
     className="workspace" 
-    ref={ el => { 
-      drop(el);
-      workspaceElement = el;
-    }}
+    ref={ drop }
     onMouseMove={ e => {
       if(mouse.state === mouseState.workspaceDown) {
         dispatch({ 
@@ -54,7 +47,7 @@ export default function Workspace() {
       }
     }}
     onMouseDown={ e => {
-      if(e.target.getAttribute('class') === 'workspace' && e.button === 0 || e.button === 1) {
+      if((e.target.getAttribute('class') === 'workspace' && e.button === 0) || e.button === 1) {
         setMouse({ 
           state: mouseState.workspaceDown,
           initialPointer: {
@@ -72,7 +65,7 @@ export default function Workspace() {
       setMouse({ state: mouseState.up });
     }}
     onWheel={ e => {
-      if(e.deltaY < 0 && scale > 0.2 || e.deltaY > 0 && scale < 2) {
+      if((e.deltaY < 0 && scale > 0.2) || (e.deltaY > 0 && scale < 2)) {
         const newScale = scale + e.deltaY * 0.01;
         dispatch({ type: 'ZOOM_WORKSPACE', scale: newScale });
       }
