@@ -2,11 +2,22 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { WorkspaceContext } from './Workspace.js';
+import { createSelector } from 'reselect';
+import elementTypes from '../data/elementTypes.js'
 
-export default function Element({ element }) {
+export default function Element({ id }) {
   const ref = React.useRef();
-  const workspace = React.useContext(WorkspaceContext);
+  const element = useSelector(state => state.elements.byId[id]);
+  const workspace = useSelector(state => state.workspace);
+  const selectedSelector = createSelector(
+    state => state.selected, 
+    ({ id: selectedId, type }) => type === 'element' && selectedId === id,
+  )
+  const selected = useSelector(selectedSelector);
   const dispatch = useDispatch();
+
+  const anchorRef = React.useRef();
+
   return <Draggable 
     position={ { x: element.x, y: element.y } }
     nodeRef={ ref }
@@ -15,25 +26,61 @@ export default function Element({ element }) {
         dispatch({ 
           type: 'UPDATE_ELEMENT', 
           data: { 
-            id: element.id, 
+            id, 
             x: data.x,
             y: data.y,
           } 
         });
       }
     }}
-    onStart={ e => e.stopPropagation() }
+    onStart={ e => { 
+      e.stopPropagation() 
+      dispatch({
+        type: 'SELECT_ELEMENT',
+        id,
+      })
+    }}
     scale={ workspace.scale }
   >
     <g className="element" ref={ ref }>
-      <rect fill="red" width="100" height="100"></rect>
-      <text 
+      <rect 
         fill="black" 
-        x={ 50 } 
-        y={ 50 } 
+        width={ element.width } 
+        height={ element.height } 
+        stroke="red"
+        strokeWidth={ selected ? 4 : 0}
+      />
+      <text 
+        fill="white" 
+        x={ element.width / 2 } 
+        y={ element.height / 2 } 
         dominantBaseline="middle" 
         textAnchor="middle"
-      >{ element.type }</text>
+      >{ elementTypes[element.type].name }</text>
+      <Draggable
+        onStart={ e => e.stopPropagation() } 
+        onDrag={ (e, data) => {
+          dispatch({ 
+            type: 'UPDATE_ELEMENT',
+            data: {
+              id,
+              width: (data.x + 5),
+              height: data.y + 5,
+            }
+          })
+        }}
+        nodeRef={ anchorRef }
+        position={{ x: element.width - 5, y: element.height - 5 }}
+        scale={ workspace.scale }
+      >
+        <rect 
+          ref={ anchorRef }
+          fill="white" 
+          stroke="grey" 
+          width="10" 
+          height="10" 
+        />
+      </Draggable>
     </g>
-  </Draggable>    
+  </Draggable>
 }

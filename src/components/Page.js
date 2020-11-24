@@ -14,11 +14,15 @@ export default function Page({ id }) {
   const elementsSelector = createSelector(
     state => state.elements.allIds, 
     state => state.elements.byId,
-    (ids, elements) => 
-      ids.filter(elId => elements[elId].page === id)
-        .map(elId => ({ ...elements[elId],  id: elId }))
+    (ids, elements) => ids.filter(elId => elements[elId].page === id)
   );
   const elements = useSelector(elementsSelector);
+
+  const selectedSelector = createSelector(
+    state => state.selected,
+    ({ id: selectedId, type }) => type === 'page' && selectedId === id,
+  )
+  const selected = useSelector(selectedSelector);
 
   const workspace = useSelector(state => state.workspace);
 
@@ -36,6 +40,8 @@ export default function Page({ id }) {
           type: item.tool,
           x: (x - workspace.offset.x - 245) / workspace.scale - page.x,
           y: (y - workspace.offset.y) / workspace.scale - page.y,
+          width: 50,
+          height: 50,
           page: id,
         }
       })
@@ -48,20 +54,28 @@ export default function Page({ id }) {
     onStop={ (e, data) => {
       dispatch({ type: 'UPDATE_PAGE', data: { id, x: data.x, y: data.y } })
     }}
-    onStart={ e => e.stopPropagation() }
+    onStart={ e => { 
+      e.stopPropagation() 
+      dispatch({
+        type: 'SELECT_PAGE',
+        id,
+      })
+    }}
     scale={ workspace.scale }
   >
     <g ref={ ref } className="page">
       <rect 
         className="pageBackground"
         fill="white"
-        stroke="grey"
+        stroke={ selected ? "red" : "grey" }
+        strokeWidth="4"
         rx="8"
+        ry="8"
         ref={ drop } 
         width="500"
         height="500" 
       />
-      { elements.map(element => <Element key={ element.id } element={ element } />) }
+      { elements.map(elId => <Element key={ elId } id={ elId } />) }
     </g>
   </Draggable>
 }

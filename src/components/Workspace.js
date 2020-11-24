@@ -21,7 +21,7 @@ export default function Workspace() {
   const [mouse, setMouse] = React.useState({ state: mouseState.up });
   const { offset, scale } = useSelector(state => state.workspace);
 
-  const [{ dropResult }, drop] = useDrop({
+  const [_, drop] = useDrop({
     accept: 'page',
     drop(item, monitor) {
       const { x, y } = monitor.getSourceClientOffset();

@@ -16,9 +16,21 @@ code {
     padding-top: 15px;
     padding-bottom: 15px;
     height: 100vh;
-    overflow: scroll;
     z-index: 100;
     width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolboxElements {
+    overflow: scroll;
+    flex: 1;
+    margin-bottom: 12px;
+}
+
+.toolboxAttributes {
+  overflow: scroll;
+  flex: 2;
 }
 
 .workspace {
