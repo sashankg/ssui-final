@@ -17,9 +17,11 @@ export default function Page({ id }) {
   );
   const elements = useSelector(elementsSelector);
 
+  const isDraggable = useSelector(state => state.modes.active_mode) === 'create';
+
   const selectedSelector = createSelector(
     state => state.selected,
-    ({ id: selectedId, type }) => type === 'page' && selectedId === id,
+    ({ id: selectedId, type }) => type === 'page' && selectedId === id && isDraggable,
   )
   const selected = useSelector(selectedSelector);
 
@@ -46,14 +48,15 @@ export default function Page({ id }) {
     }
   })
 
-  return <Draggable 
+  return <Draggable
+    disabled={!isDraggable}
     nodeRef={ ref }
     position={ { x: page.x, y: page.y } }
     onStop={ (e, data) => {
       dispatch({ type: 'UPDATE_PAGE', data: { id, x: data.x, y: data.y } })
     }}
-    onStart={ e => { 
-      e.stopPropagation() 
+    onStart={ (e, data) => { 
+      e.stopPropagation()
       dispatch({
         type: 'SELECT_PAGE',
         id,

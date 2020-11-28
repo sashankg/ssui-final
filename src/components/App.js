@@ -10,6 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Toolbox from './Toolbox.js';
 import Workspace from './Workspace.js';
+import ModeToggle from './ModeToggle.js';
 
 function App() {
   return <Provider store={ store }>
@@ -23,6 +24,7 @@ function App() {
             <Workspace />
           </Col>
         </Row>
+        <ModeToggle />
       </Container>
     </DndProvider>
   </Provider>
