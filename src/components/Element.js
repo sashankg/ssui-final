@@ -17,17 +17,47 @@ export default function Element({ id }) {
 
   const anchorRef = React.useRef();
 
+  function handleMouseUp(e) {
+    if(e.button === 2) {
+      e.stopPropagation();
+      dispatch({
+        type: 'FINISH_LINK',
+        item: {
+          type: 'element',
+          id,
+        }
+      })
+    } 
+  }
+
   return <Draggable 
     position={ { x: element.x, y: element.y } }
     nodeRef={ ref }
+    onMouseDown={ e => {
+      if(e.button === 2) {
+        e.stopPropagation();
+        console.log(e);
+        dispatch({
+          type: 'START_LINK',
+          item: {
+            type: 'element',
+            id,
+          },
+          position: {
+            x: e.clientX,
+            y: e.clientY,
+          }
+        })
+      } 
+    }}
     onStop={ (e, data) => {
       if(data.x > 0 && data.x < 500 && data.y > 0 && data.y < 500) {
         dispatch({ 
           type: 'UPDATE_ELEMENT', 
           data: { 
             id, 
-            x: data.x,
-            y: data.y,
+            x: Math.floor(data.x),
+            y: Math.floor(data.y),
           } 
         });
       }
@@ -41,13 +71,17 @@ export default function Element({ id }) {
     }}
     scale={ workspace.scale }
   >
-    <g className="element" ref={ ref }>
+    <g 
+      className="element" 
+      ref={ ref } 
+    >
       <rect 
         fill="black" 
         width={ element.width } 
         height={ element.height } 
         stroke="red"
         strokeWidth={ selected ? 4 : 0}
+        onMouseUp={ handleMouseUp }
       />
       <text 
         fill="white" 
@@ -55,6 +89,7 @@ export default function Element({ id }) {
         y={ element.height / 2 } 
         dominantBaseline="middle" 
         textAnchor="middle"
+        onMouseUp={ handleMouseUp }
       >{ elementTypes[element.type].name }</text>
       <Draggable
         onStart={ e => e.stopPropagation() } 
@@ -63,8 +98,8 @@ export default function Element({ id }) {
             type: 'UPDATE_ELEMENT',
             data: {
               id,
-              width: (data.x + 5),
-              height: data.y + 5,
+              width: Math.floor(data.x + 5),
+              height: Math.floor(data.y + 5),
             }
           })
         }}

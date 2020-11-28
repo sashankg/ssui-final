@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
 import Page from './Page.js';
+import Link from './Link.js';
 
 const mouseState = {
   workspaceDown: 0,
@@ -60,6 +61,9 @@ export default function Workspace() {
     }}
     onMouseUp={ e => {
       setMouse({ state: mouseState.up });
+      if(e.button === 2) {
+        dispatch({ type: 'CANCEL_LINK' }) 
+      }
     }}
     onMouseLeave={ e => {
       setMouse({ state: mouseState.up });
@@ -79,5 +83,6 @@ export default function Workspace() {
         return <Page key={ id } id={ id } />
       })}
     </g>
+    <Link />
   </svg>
 }

@@ -36,8 +36,8 @@ export default function Page({ id }) {
         type: 'ADD_ELEMENT',
         data: {
           type: item.tool,
-          x: (x - workspace.offset.x - 230) / workspace.scale - page.x,
-          y: (y - workspace.offset.y) / workspace.scale - page.y,
+          x: Math.floor((x - workspace.offset.x - 230) / workspace.scale - page.x),
+          y: Math.floor((y - workspace.offset.y) / workspace.scale - page.y),
           width: 50,
           height: 50,
           page: id,
@@ -49,6 +49,22 @@ export default function Page({ id }) {
   return <Draggable 
     nodeRef={ ref }
     position={ { x: page.x, y: page.y } }
+    onMouseDown={ e => {
+      if(e.button === 2) {
+        e.stopPropagation();
+        dispatch({
+          type: 'START_LINK',
+          item: {
+            type: 'page',
+            id,
+          },
+          position: {
+            x: e.clientX,
+            y: e.clientY,
+          }
+        })
+      } 
+    }}
     onStop={ (e, data) => {
       dispatch({ type: 'UPDATE_PAGE', data: { id, x: data.x, y: data.y } })
     }}
@@ -72,6 +88,18 @@ export default function Page({ id }) {
         ref={ drop } 
         width="500"
         height="500" 
+        onMouseUp={ e => {
+          if(e.button === 2) {
+            e.stopPropagation();
+            dispatch({
+              type: 'FINISH_LINK',
+              item: {
+                type: 'page',
+                id,
+              }
+            })
+          } 
+        }}
       />
       { elements.map(elId => <Element key={ elId } id={ elId } />) }
     </g>
