@@ -1,8 +1,24 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import elementTypes from '../data/elementTypes.js'
+
+function ButtonElement({ height, width, text, disabled }) {
+  return <foreignObject
+    height={ height }
+    width={ width }>
+      <Button
+        xmlns="http://www.w3.org/1999/xhtml"
+        variant="primary"
+        style={ { minHeight: height } }
+        disabled={ disabled }
+        block>
+        { text }
+      </Button>
+  </foreignObject>
+}
 
 export default function Element({ id }) {
   const ref = React.useRef();
@@ -44,20 +60,12 @@ export default function Element({ id }) {
     scale={ workspace.scale }
   >
     <g className="element" ref={ ref }>
-      <rect 
-        fill="black" 
-        width={ element.width } 
-        height={ element.height } 
-        stroke="red"
-        strokeWidth={ selected ? 4 : 0}
+      <ButtonElement 
+        width={ element.width }
+        height={ element.height }
+        text={ element.text }
+        disabled={ false }
       />
-      <text 
-        fill="white" 
-        x={ element.width / 2 } 
-        y={ element.height / 2 } 
-        dominantBaseline="middle" 
-        textAnchor="middle"
-      >{ elementTypes[element.type].name }</text>
       <Draggable
         disabled={!isDraggable}
         onStart={ e => e.stopPropagation() } 

@@ -14,6 +14,9 @@ function AttributeInput({ type, value, onChange, disabled }) {
     case AT.string:
       return <Form.Control 
         disabled={ disabled }
+        onChange={ e => onChange(e.target.value || "") } 
+        type="string"
+        value={ value }
       />
     case AT.number:
       return <Form.Control
