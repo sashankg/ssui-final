@@ -10,10 +10,12 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Toolbox from './Toolbox.js';
 import Workspace from './Workspace.js';
+import LinkModal from './LinkModal.js';
 
 function App() {
   return <Provider store={ store }>
     <DndProvider backend={ HTML5Backend }>
+      <LinkModal />
       <Container fluid>
         <Row>
           <Col xs="auto" lg="auto">
