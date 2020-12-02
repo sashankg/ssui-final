@@ -9,7 +9,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Toolbox from './Toolbox.js';
-import Workspace from './Workspace.js';
+import MainWindow from './MainWindow.js';
 import ModeToggle from './ModeToggle.js';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
             <Toolbox />
           </Col>
             <Col style={{ padding: 0 }}>
-            <Workspace />
+            <MainWindow />
           </Col>
         </Row>
         <ModeToggle />
