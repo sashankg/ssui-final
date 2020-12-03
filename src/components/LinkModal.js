@@ -30,7 +30,22 @@ function Content() {
     <Container>
       <Row>
         <Col>
-          { first.type } (id: { firstData.id })
+          <Form.Label>
+            { first.type } (id: { firstData.id })
+          </Form.Label>
+          <Form.Control as="select">
+            <option value="left">left</option>
+            <option value="right">right</option>
+            <option value="bottom">bottom</option>
+            <option value="top">top</option>
+            <option value="width">width</option>
+            <option value="height">height</option>
+          </Form.Control>
+        </Col>
+        <Col>
+          <Form.Label>
+            Relationship
+          </Form.Label>
           <Form.Control as="select">
             <option value="equal">=</option>
             <option value="less">{ "<" }</option>
@@ -38,14 +53,9 @@ function Content() {
           </Form.Control>
         </Col>
         <Col>
-          <Form.Control as="select">
-            <option value="equal">=</option>
-            <option value="less">{ "<" }</option>
-            <option value="greater">{ ">" }</option>
-          </Form.Control>
-        </Col>
-        <Col>
+          <Form.Label>
           { second.type } (id: { secondData.id })
+          </Form.Label>
           <Form.Control as="select">
             <option value="equal">=</option>
             <option value="less">{ "<" }</option>
@@ -53,6 +63,10 @@ function Content() {
           </Form.Control>
         </Col>
       </Row>
+      <Form.Label style={{ marginTop: 24 }}>
+            Offset
+          </Form.Label>
+          <Form.Control />
     </Container>
   </Form>
 }
@@ -83,7 +97,7 @@ export default function LinkModal() {
           onClick={ () => dispatch(cancelLink()) }
         >
           Add Constraint
-        </Button >
+        </Button>
       </Modal.Footer>
     </Modal>
   }
