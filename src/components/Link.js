@@ -25,16 +25,16 @@ export default function Link() {
       <line 
         x1={ position.x - 230 } 
         y1={ position.y }
-        x2={ mouse.x - 230 - 5}
-        y2={ mouse.y  - 5}
+        x2={ mouse.x - 230 }
+        y2={ mouse.y }
         stroke="white"
         strokeWidth="7"
       />
       <line 
         x1={ position.x - 230 } 
         y1={ position.y }
-        x2={ mouse.x - 230 - 5 }
-        y2={ mouse.y - 5 }
+        x2={ mouse.x - 230 }
+        y2={ mouse.y }
         stroke="blue"
         strokeWidth="3"
       />

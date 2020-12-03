@@ -4,4 +4,4 @@ export default createListReducer({
   add: 'ADD_ELEMENT',
   remove: 'REMOVE_ELEMENT',
   update: 'UPDATE_ELEMENT',
-})
+});

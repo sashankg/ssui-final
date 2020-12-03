@@ -12,6 +12,8 @@ import Toolbox from './Toolbox.js';
 import Workspace from './Workspace.js';
 import LinkModal from './LinkModal.js';
 
+import '../actions/constraintActions.js';
+
 function App() {
   return <Provider store={ store }>
     <DndProvider backend={ HTML5Backend }>
