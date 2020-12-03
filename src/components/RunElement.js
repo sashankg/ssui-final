@@ -30,20 +30,23 @@ function ButtonElement({ height, width, text, destination }) {
   </div>
 }
 
-function TextBoxElement({ height, width, text }) {
+function TextBoxElement({ height, width }) {
   return <Form>
         <Form.Group controlId="formBasicText" style={ { minHeight: height, minWidth: width } }>
-          <Form.Label>{ text }</Form.Label>
-          <Form.Control as="textarea" rows={3} />
+          <Form.Control
+            as="textarea"
+            rows={height / 30}
+            cols={Math.max(Math.floor(width / 10), 1)}
+            style={ { minHeight: height, width: width } }
+          />
         </Form.Group>
   </Form>
 }
 
-function SliderElement({ height, width, text}) {
+function SliderElement({ height, width, min, max }) {
   return <Form>
         <Form.Group controlId="formBasicRange" style={ { minHeight: height, minWidth: width } }>
-          <Form.Label>{ text }</Form.Label>
-          <Form.Control type="range"/>
+          <Form.Control type="range" min={ min } max={ max }/>
         </Form.Group>
   </Form>
 }
@@ -58,7 +61,7 @@ function DropdownElement({ height, width, text, items }) {
         </Dropdown.Toggle>
         <Dropdown.Menu>
           { items.map((item) => {
-            return <Dropdown.Item>item</Dropdown.Item>
+            return <Dropdown.Item>{ item }</Dropdown.Item>
           }) }
         </Dropdown.Menu>
   </Dropdown>
@@ -91,13 +94,13 @@ function renderElement(element) {
           return <SliderElement
             width={ element.width }
             height={ element.height }
-            text={ element.text }
+            min={ element.min }
+            max={ element.max }
           />
         case 'textbox':
           return <TextBoxElement
             width={ element.width }
             height={ element.height }
-            text={ element.text }
           />
         default:
           return <div>Placeholder</div>

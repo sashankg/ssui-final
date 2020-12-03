@@ -11,6 +11,8 @@ for(const key in elementTypes) {
 
 function AttributeInput({ type, value, onChange, disabled }) {
   switch(type) {
+    case AT.color:
+    case AT.list:
     case AT.string:
       return <Form.Control 
         disabled={ disabled }
@@ -18,6 +20,7 @@ function AttributeInput({ type, value, onChange, disabled }) {
         type="string"
         value={ value }
       />
+    case AT.page:
     case AT.number:
       return <Form.Control
         disabled={ disabled }
@@ -25,8 +28,17 @@ function AttributeInput({ type, value, onChange, disabled }) {
         type="number" 
         value={ value }
       />
+    case AT.boolean:
+      return <Form.Check
+        disabled={ disabled }
+        onChange={ e => onChange(e.target.value) } 
+        type="number" 
+        value={ value }
+      />
     default: 
-      return <Form.Control />
+      return <Form.Control
+        disabled={ disabled }
+      />
   }
 }
 
