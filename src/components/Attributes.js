@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import elementTypes from '../data/elementTypes.js';
 import AT from '../data/attributeTypes.js';
+import { updateElement } from '../actions/elementActions.js';
 
 let attributes = { };
 for(const key in elementTypes) {
@@ -37,13 +38,7 @@ function ElementAttributes() {
           type={ elementTypes[element.type][key] } 
           value={ element[key]}
           onChange={ value => {
-            dispatch({
-              type: 'UPDATE_ELEMENT',
-              data: {
-                id: selected.id,
-                [key]: value,
-              }
-            })
+            dispatch(updateElement(selected.id, { [key]: value }))
           }}
         />
       </Form.Group>

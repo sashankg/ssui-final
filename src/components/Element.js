@@ -3,6 +3,15 @@ import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import elementTypes from '../data/elementTypes.js'
+import { 
+  cancelLink,
+  startLink,
+  finishLink,
+} from '../actions/linkActions.js';
+import {
+  selectElement,
+  updateElement,
+} from '../actions/elementActions.js';
 
 export default function Element({ id }) {
   const ref = React.useRef();
@@ -20,13 +29,7 @@ export default function Element({ id }) {
   function handleMouseUp(e) {
     if(e.button === 2) {
       e.stopPropagation();
-      dispatch({
-        type: 'FINISH_LINK',
-        item: {
-          type: 'element',
-          id,
-        }
-      })
+      dispatch(finishLink('element', id))
     } 
   }
 
@@ -36,38 +39,17 @@ export default function Element({ id }) {
     onMouseDown={ e => {
       if(e.button === 2) {
         e.stopPropagation();
-        console.log(e);
-        dispatch({
-          type: 'START_LINK',
-          item: {
-            type: 'element',
-            id,
-          },
-          position: {
-            x: e.clientX,
-            y: e.clientY,
-          }
-        })
+        dispatch(startLink('element', id, e.clientX, e.clientY));
       } 
     }}
     onStop={ (e, data) => {
       if(data.x > 0 && data.x < 500 && data.y > 0 && data.y < 500) {
-        dispatch({ 
-          type: 'UPDATE_ELEMENT', 
-          data: { 
-            id, 
-            x: Math.floor(data.x),
-            y: Math.floor(data.y),
-          } 
-        });
+        dispatch(updateElement(id, { x: Math.floor(data.x), y: Math.floor(data.y) }));
       }
     }}
     onStart={ e => { 
       e.stopPropagation() 
-      dispatch({
-        type: 'SELECT_ELEMENT',
-        id,
-      })
+      dispatch(selectElement(id))
     }}
     scale={ workspace.scale }
   >
@@ -94,14 +76,10 @@ export default function Element({ id }) {
       <Draggable
         onStart={ e => e.stopPropagation() } 
         onDrag={ (e, data) => {
-          dispatch({ 
-            type: 'UPDATE_ELEMENT',
-            data: {
-              id,
-              width: Math.floor(data.x + 5),
-              height: Math.floor(data.y + 5),
-            }
-          })
+          dispatch(updateElement(id, { 
+            width: Math.floor(data.x + 5), 
+            height: Math.floor(data.y + 5)
+          }))
         }}
         nodeRef={ anchorRef }
         position={{ x: element.width - 5, y: element.height - 5 }}
