@@ -90,7 +90,7 @@ export function addConstraint(first, second, relationship, offset) {
     const constraint = { first, second, relationship, offset }
     const id = getState().constraints.nextId;
     dispatch({ type: 'ADD_CONSTRAINT', data: constraint });
-    const fe = toExpression(first);
+    const fe = toExpression(first).plus(offset);
     const se = toExpression(second);
     console.log(fe, se);
     const c = new kiwi.Constraint(fe, toOp(relationship), se, kiwi.Strength.required);

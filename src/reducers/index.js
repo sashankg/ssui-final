@@ -6,6 +6,8 @@ import elements from './elementsReducer.js';
 import selected from './selectedReducer.js';
 import link from './linkReducer.js';
 import constraints from './constraintsReducer.js';
+import modes from './modesReducer.js';
+import runspace from './runspaceReducer.js';
 
 export default combineReducers({
   pages,
@@ -14,4 +16,6 @@ export default combineReducers({
   selected,
   link,
   constraints,
+  modes,
+  runspace
 });

@@ -17,9 +17,10 @@ export default function Element({ id }) {
   const ref = React.useRef();
   const element = useSelector(state => state.elements.byId[id]);
   const workspace = useSelector(state => state.workspace);
+  const isDraggable = useSelector(state => state.modes.active_mode) === 'create';
   const selectedSelector = createSelector(
     state => state.selected, 
-    ({ id: selectedId, type }) => type === 'element' && selectedId === id,
+    ({ id: selectedId, type }) => type === 'element' && selectedId === id && isDraggable,
   )
   const selected = useSelector(selectedSelector);
   const dispatch = useDispatch();
@@ -33,7 +34,8 @@ export default function Element({ id }) {
     } 
   }
 
-  return <Draggable 
+  return <Draggable
+    disabled={!isDraggable}
     position={ { x: element.x, y: element.y } }
     nodeRef={ ref }
     onMouseDown={ e => {
@@ -74,6 +76,7 @@ export default function Element({ id }) {
         onMouseUp={ handleMouseUp }
       >{ elementTypes[element.type].name }</text>
       <Draggable
+        disabled={!isDraggable}
         onStart={ e => e.stopPropagation() } 
         onDrag={ (e, data) => {
           dispatch(updateElement(id, { 
@@ -85,7 +88,8 @@ export default function Element({ id }) {
         position={{ x: element.width - 5, y: element.height - 5 }}
         scale={ workspace.scale }
       >
-        <rect 
+        <rect
+          className={!isDraggable ? "hidden" : null} 
           ref={ anchorRef }
           fill="white" 
           stroke="grey" 

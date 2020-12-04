@@ -24,9 +24,11 @@ export default function Page({ id }) {
   );
   const elements = useSelector(elementsSelector);
 
+  const isDraggable = useSelector(state => state.modes.active_mode) === 'create';
+
   const selectedSelector = createSelector(
     state => state.selected,
-    ({ id: selectedId, type }) => type === 'page' && selectedId === id,
+    ({ id: selectedId, type }) => type === 'page' && selectedId === id && isDraggable,
   )
   const selected = useSelector(selectedSelector);
 
@@ -48,7 +50,8 @@ export default function Page({ id }) {
     }
   })
 
-  return <Draggable 
+  return <Draggable
+    disabled={!isDraggable}
     nodeRef={ ref }
     position={ { x: page.x, y: page.y } }
     onMouseDown={ e => {

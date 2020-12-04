@@ -13,6 +13,8 @@ import Workspace from './Workspace.js';
 import LinkModal from './LinkModal.js';
 
 import '../actions/constraintActions.js';
+import MainWindow from './MainWindow.js';
+import ModeToggle from './ModeToggle.js';
 
 function App() {
   return <Provider store={ store }>
@@ -24,9 +26,10 @@ function App() {
             <Toolbox />
           </Col>
             <Col style={{ padding: 0 }}>
-            <Workspace />
+            <MainWindow />
           </Col>
         </Row>
+        <ModeToggle />
       </Container>
     </DndProvider>
   </Provider>
