@@ -7,7 +7,9 @@ const middlewareEnhancer = applyMiddleware(thunk);
 
 export default createStore(reducers, 
   compose(
-    middlewareEnhancer, 
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      middlewareEnhancer, 
+      window.__REDUX_DEVTOOLS_EXTENSION__
+      ? window.__REDUX_DEVTOOLS_EXTENSION__()
+      : f => f
   )
 );
