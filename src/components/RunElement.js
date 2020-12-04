@@ -1,6 +1,7 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button, Form, Dropdown } from 'react-bootstrap';
+import 'holderjs';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Button, Form, Dropdown, Image } from 'react-bootstrap';
 
 function LabelElement({ height, width, text, fontSize, destination }) {
   return <div style={ { height: height, width: width } }>
@@ -67,6 +68,38 @@ function DropdownElement({ height, width, text, items }) {
   </Dropdown>
 }
 
+ function ImageElement({ height, width, src }) {
+  const [imgSrc, updateSrc] = useState(""); 
+  useEffect(() => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      updateSrc(reader.result);
+    }
+
+    try {
+      reader.readAsDataURL(src)
+    } catch {
+      updateSrc(`holder.js/${width}x${height}`);
+    }
+  }, [src, width, height]);
+  return <Image src={imgSrc} style={ {height: height, width: width} } />
+}
+
+function CheckBoxElement({ text }) {
+  return <Form.Check 
+    type="checkbox"
+    label={ text }
+  />
+}
+
+function RadioElement({ text, group }) {
+  return <Form.Check
+    type="radio"
+    name={ group }
+    label={ text }
+  />
+}
+
 function renderElement(element) {
   switch(element.type) {
         case 'button':
@@ -101,6 +134,21 @@ function renderElement(element) {
           return <TextBoxElement
             width={ element.width }
             height={ element.height }
+          />
+        case 'image':
+          return <ImageElement
+            width={ element.width }
+            height={ element.height }
+            src={ element.src }
+          />
+        case 'checkbox':
+          return <CheckBoxElement
+            text={ element.text }
+          />
+        case 'radio':
+          return <RadioElement
+            text={ element.text }
+            group={ element.group }
           />
         default:
           return <div>Placeholder</div>

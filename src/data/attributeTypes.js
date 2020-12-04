@@ -5,6 +5,7 @@ const attributeTypes = {
   color: 'color',
   page: 'page',
   list: 'list',
+  file: 'file'
 }
 
 export default attributeTypes;

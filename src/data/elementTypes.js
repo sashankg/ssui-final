@@ -34,7 +34,24 @@ const elementTypes = {
   dropdown: {
     name: 'Dropdown',
     ...commonAttributes,
+    text: AT.string,
     values: AT.list, 
+  },
+  image: {
+    name: 'Image',
+    ...commonAttributes,
+    src: AT.file,
+  },
+  checkbox: {
+    name: 'Checkbox',
+    ...commonAttributes,
+    text: AT.string,
+  },
+  radio: {
+    name: 'Radio',
+    ...commonAttributes,
+    text: AT.string,
+    group: AT.string,
   }
 };
 

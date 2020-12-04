@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useDrop } from 'react-dnd';
 
 import RunElement from './RunElement.js';
 

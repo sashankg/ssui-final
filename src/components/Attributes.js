@@ -35,6 +35,13 @@ function AttributeInput({ type, value, onChange, disabled }) {
         type="number" 
         value={ value }
       />
+    case AT.file:
+      return <Form.File
+        disabled={ disabled }
+        label="Image File"
+        onChange={ e => onChange(e.target.files[0]) }
+        feedbackTooltip
+      />
     default: 
       return <Form.Control
         disabled={ disabled }

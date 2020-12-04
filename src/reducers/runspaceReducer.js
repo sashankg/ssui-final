@@ -2,7 +2,7 @@ export default function runspaceReducer(state, action) {
   switch(action.type) {
     case 'CHANGE_PAGE':
       return {
-        current_page: action.data.current_page || state.current_page
+        current_page: action.data.current_page
       }
     default: 
       return state || {
