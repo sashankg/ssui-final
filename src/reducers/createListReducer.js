@@ -35,6 +35,9 @@ export default function createListReducer(actions) {
           }
         } 
       }
+      case actions.load: {
+        return action.data
+      }
       default: {
         return state || {
           byId: { },

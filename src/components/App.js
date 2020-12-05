@@ -11,6 +11,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Toolbox from './Toolbox.js';
 import MainWindow from './MainWindow.js';
 import ModeToggle from './ModeToggle.js';
+import SaveLoad from './SaveLoad.js';
 
 function App() {
   return <Provider store={ store }>
@@ -22,9 +23,10 @@ function App() {
           </Col>
             <Col style={{ padding: 0 }}>
             <MainWindow />
+            <SaveLoad />
+            <ModeToggle />
           </Col>
         </Row>
-        <ModeToggle />
       </Container>
     </DndProvider>
   </Provider>
