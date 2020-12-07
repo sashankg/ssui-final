@@ -1,4 +1,5 @@
 import * as kiwi from 'kiwi.js';
+import { updateElement } from './elementActions.js';
 
 const solver = new kiwi.Solver();
 
@@ -24,7 +25,7 @@ function fromVarKey(key) {
   }
 }
 
-function getVariable(id, value) {
+function getVariable(id, value, state) {
   const key = toVarKey(id, value)
   if(variables[key]) {
     return variables[key];
@@ -37,7 +38,7 @@ function getVariable(id, value) {
   }
 }
 
-function toExpression({ value, type, id }) {
+function toExpression({ value, type, id }, state) {
   function E(x) {
     return new kiwi.Expression(x);
   }
@@ -57,18 +58,36 @@ function toExpression({ value, type, id }) {
   }
   else {
     switch(value) {
-      case 'left':
-        return E(getVariable(id, 'x'));
-      case 'top':
-        return E(getVariable(id, 'y'));
-      case 'width':
-        return E(getVariable(id, 'w'));
-      case 'right':
-        return E(getVariable(id, 'x').plus(getVariable(id, 'w')));
-      case 'height':
-        return E(getVariable(id, 'h'));
-      case 'bottom':
-        return E(getVariable(id, 'y').plus(getVariable(id, 'h')));
+      case 'left': {
+        const v = getVariable(id, 'x')
+        solver.suggestValue(v, state.elements.byId[id].x);
+        return E(v);
+      }
+      case 'top': {
+        const v = getVariable(id, 'y')
+        solver.suggestValue(v, state.elements.byId[id].y);
+        return E(v);
+      }
+      case 'width': {
+        const v = getVariable(id, 'w')
+        solver.suggestValue(v, state.elements.byId[id].width);
+        return E(v);
+      }
+      case 'right': {
+        const v = getVariable(id, 'x')
+        solver.suggestValue(v, state.elements.byId[id].x);
+        return v.plus(getVariable(id, 'w'));
+      }
+      case 'height': {
+        const v = getVariable(id, 'h')
+        solver.suggestValue(v, state.elements.byId[id].height);
+        return E(v);
+      }
+      case 'bottom': {
+        const v = getVariable(id, 'y')
+        solver.suggestValue(v, state.elements.byId[id].y);
+        return v.plus(getVariable(id, 'h'));
+      }
     }
   }
 }
@@ -84,18 +103,70 @@ function toOp(relationship) {
   }
 }
 
+const key2value = {
+  'x': 'x',
+  'y': 'y',
+  'w': 'width',
+  'h': 'height',
+}
+
+const value2key = {
+  'x': 'x',
+  'y': 'y',
+  'width': 'w',
+  'height': 'h',
+}
+
 export function addConstraint(first, second, relationship, offset) {
   console.log(first, second, relationship, offset);
   return (dispatch, getState) => {
-    const constraint = { first, second, relationship, offset }
-    const id = getState().constraints.nextId;
-    dispatch({ type: 'ADD_CONSTRAINT', data: constraint });
-    const fe = toExpression(first).plus(offset);
-    const se = toExpression(second);
+    const state = getState();
+
+    const fe = toExpression(first, state).plus(parseFloat(offset));
+    const se = toExpression(second, state);
+
     console.log(fe, se);
+
     const c = new kiwi.Constraint(fe, toOp(relationship), se, kiwi.Strength.required);
+
+    const constraintData = { 
+      first, 
+      second, 
+      relationship, 
+      offset,
+      kiwi: c,
+    }
+    dispatch({ type: 'ADD_CONSTRAINT', data: constraintData });
+
     solver.addConstraint(c);
-    solver.updateVariables();
-    console.log(variables);
+    recalculate(dispatch);
   }
+}
+
+function recalculate(dispatch) {
+  solver.updateVariables();
+  for(var key in variables) {
+    if(key !== 'pageHeight' && key !== 'pageWidth') {
+      const variable = fromVarKey(key);
+      console.log(variables[key]);
+      dispatch({
+        type: 'UPDATE_ELEMENT',
+        data: {
+          id: variable.id,
+          [key2value[variable.value]]: variables[key].value()
+        }
+      })
+    }
+  }
+}
+
+export function onUpdateElement(id, data, dispatch) {
+  for(var key in data) {
+    const variableKey = id + value2key[key]
+    console.log(variableKey);
+    if(variables[variableKey]) {
+      solver.suggestValue(variables[variableKey], data[key]);
+    }
+  }
+  recalculate(dispatch);
 }

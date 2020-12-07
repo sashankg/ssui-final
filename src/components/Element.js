@@ -25,6 +25,8 @@ export default function Element({ id }) {
   const selected = useSelector(selectedSelector);
   const dispatch = useDispatch();
 
+  const [tempSize, setTempSize] = React.useState(null); 
+
   const anchorRef = React.useRef();
 
   function handleMouseUp(e) {
@@ -61,16 +63,16 @@ export default function Element({ id }) {
     >
       <rect 
         fill="black" 
-        width={ element.width } 
-        height={ element.height } 
+        width={ tempSize ? tempSize.width : element.width } 
+        height={ tempSize ? tempSize.height : element.height } 
         stroke="red"
         strokeWidth={ selected ? 4 : 0}
         onMouseUp={ handleMouseUp }
       />
       <text 
         fill="white" 
-        x={ element.width / 2 } 
-        y={ element.height / 2 } 
+        x={ tempSize ? tempSize.width / 2 : element.width / 2 } 
+        y={ tempSize ? tempSize.height / 2 : element.height / 2 } 
         dominantBaseline="middle" 
         textAnchor="middle"
         onMouseUp={ handleMouseUp }
@@ -78,11 +80,18 @@ export default function Element({ id }) {
       <Draggable
         disabled={!isDraggable}
         onStart={ e => e.stopPropagation() } 
-        onDrag={ (e, data) => {
+        onStop={ (e, data) => {
           dispatch(updateElement(id, { 
             width: Math.floor(data.x + 5), 
             height: Math.floor(data.y + 5)
           }))
+          setTempSize(null);
+        }}
+        onDrag={ (e, data) => {
+          setTempSize({ 
+            width: data.x + 5,
+            height: data.y + 5,
+          })
         }}
         nodeRef={ anchorRef }
         position={{ x: element.width - 5, y: element.height - 5 }}

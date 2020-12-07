@@ -1,3 +1,5 @@
+import { onUpdateElement } from './constraintActions.js';
+
 export function selectElement(id) {
   return {
     type: 'SELECT_ELEMENT',
@@ -20,8 +22,12 @@ export function addElement(page, type, x, y) {
 }
 
 export function updateElement(id, data) {
-  return { 
-    type: 'UPDATE_ELEMENT', 
-    data: { id, ...data } 
+  console.log(data);
+  return dispatch => {
+    dispatch({ 
+      type: 'UPDATE_ELEMENT', 
+      data: { id, ...data } 
+    })
+    onUpdateElement(id, data, dispatch)
   }
 }
