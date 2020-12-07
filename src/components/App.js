@@ -15,6 +15,7 @@ import LinkModal from './LinkModal.js';
 import '../actions/constraintActions.js';
 import MainWindow from './MainWindow.js';
 import ModeToggle from './ModeToggle.js';
+import SaveLoad from './SaveLoad.js';
 
 function App() {
   return <Provider store={ store }>
@@ -27,9 +28,10 @@ function App() {
           </Col>
             <Col style={{ padding: 0 }}>
             <MainWindow />
+            <SaveLoad />
+            <ModeToggle />
           </Col>
         </Row>
-        <ModeToggle />
       </Container>
     </DndProvider>
   </Provider>

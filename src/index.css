@@ -74,6 +74,24 @@ code {
   right: 10px;
 }
 
+.page-select {
+  position: absolute;
+  top: 10px;
+  right: 150px;
+  max-width: 200px;
+}
+
+.save-load {
+  position: absolute;
+  display: flex;
+  top: 10px;
+  left: 10px;
+}
+
+.file-button {
+  margin-right: 10px;
+}
+
 .hidden {
   visibility: hidden;
 }
