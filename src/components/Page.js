@@ -3,6 +3,13 @@ import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { createSelector } from 'reselect';
+import { 
+  cancelLink,
+  startLink,
+  finishLink,
+} from '../actions/linkActions.js';
+import { addElement } from '../actions/elementActions.js';
+import { updatePage, selectPage } from '../actions/pageActions.js';
 
 import Element from './Element.js';
 
@@ -34,17 +41,12 @@ export default function Page({ id }) {
     accept: 'element',
     drop(item, monitor) {
       const { x, y } = monitor.getSourceClientOffset();
-      dispatch({ 
-        type: 'ADD_ELEMENT',
-        data: {
-          type: item.tool,
-          x: Math.floor((x - workspace.offset.x - 230) / workspace.scale - page.x),
-          y: Math.floor((y - workspace.offset.y) / workspace.scale - page.y),
-          width: 50,
-          height: 50,
-          page: id,
-        }
-      })
+      dispatch(addElement(
+        id,
+        item.tool,
+        Math.floor((x - workspace.offset.x - 230) / workspace.scale - page.x),
+        Math.floor((y - workspace.offset.y) / workspace.scale - page.y),
+      ))
     }
   })
 
@@ -55,28 +57,15 @@ export default function Page({ id }) {
     onMouseDown={ e => {
       if(e.button === 2) {
         e.stopPropagation();
-        dispatch({
-          type: 'START_LINK',
-          item: {
-            type: 'page',
-            id,
-          },
-          position: {
-            x: e.clientX,
-            y: e.clientY,
-          }
-        })
+        dispatch(startLink('page', id, e.clientX, e.clientY));
       } 
     }}
     onStop={ (e, data) => {
-      dispatch({ type: 'UPDATE_PAGE', data: { id, x: data.x, y: data.y } })
+      dispatch(updatePage(id, { x: data.x, y: data.y }))
     }}
-    onStart={ (e, data) => { 
-      e.stopPropagation()
-      dispatch({
-        type: 'SELECT_PAGE',
-        id,
-      })
+    onStart={ e => { 
+      e.stopPropagation() 
+      dispatch(selectPage(id));
     }}
     scale={ workspace.scale }
   >
@@ -94,13 +83,7 @@ export default function Page({ id }) {
         onMouseUp={ e => {
           if(e.button === 2) {
             e.stopPropagation();
-            dispatch({
-              type: 'FINISH_LINK',
-              item: {
-                type: 'page',
-                id,
-              }
-            })
+            dispatch(finishLink('page', id))
           } 
         }}
       />

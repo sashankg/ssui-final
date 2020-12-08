@@ -3,6 +3,15 @@ import Draggable from 'react-draggable';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import elementTypes from '../data/elementTypes.js'
+import { 
+  cancelLink,
+  startLink,
+  finishLink,
+} from '../actions/linkActions.js';
+import {
+  selectElement,
+  updateElement,
+} from '../actions/elementActions.js';
 
 export default function Element({ id }) {
   const ref = React.useRef();
@@ -16,18 +25,14 @@ export default function Element({ id }) {
   const selected = useSelector(selectedSelector);
   const dispatch = useDispatch();
 
+  const [tempSize, setTempSize] = React.useState(null); 
+
   const anchorRef = React.useRef();
 
   function handleMouseUp(e) {
     if(e.button === 2) {
       e.stopPropagation();
-      dispatch({
-        type: 'FINISH_LINK',
-        item: {
-          type: 'element',
-          id,
-        }
-      })
+      dispatch(finishLink('element', id))
     } 
   }
 
@@ -38,38 +43,17 @@ export default function Element({ id }) {
     onMouseDown={ e => {
       if(e.button === 2) {
         e.stopPropagation();
-        console.log(e);
-        dispatch({
-          type: 'START_LINK',
-          item: {
-            type: 'element',
-            id,
-          },
-          position: {
-            x: e.clientX,
-            y: e.clientY,
-          }
-        })
+        dispatch(startLink('element', id, e.clientX, e.clientY));
       } 
     }}
     onStop={ (e, data) => {
       if(data.x > 0 && data.x < 500 && data.y > 0 && data.y < 500) {
-        dispatch({ 
-          type: 'UPDATE_ELEMENT', 
-          data: { 
-            id, 
-            x: Math.floor(data.x),
-            y: Math.floor(data.y),
-          } 
-        });
+        dispatch(updateElement(id, { x: Math.floor(data.x), y: Math.floor(data.y) }));
       }
     }}
     onStart={ e => { 
       e.stopPropagation() 
-      dispatch({
-        type: 'SELECT_ELEMENT',
-        id,
-      })
+      dispatch(selectElement(id))
     }}
     scale={ workspace.scale }
   >
@@ -79,16 +63,16 @@ export default function Element({ id }) {
     >
       <rect 
         fill="black" 
-        width={ element.width } 
-        height={ element.height } 
+        width={ tempSize ? tempSize.width : element.width } 
+        height={ tempSize ? tempSize.height : element.height } 
         stroke="red"
         strokeWidth={ selected ? 4 : 0}
         onMouseUp={ handleMouseUp }
       />
       <text 
         fill="white" 
-        x={ element.width / 2 } 
-        y={ element.height / 2 } 
+        x={ tempSize ? tempSize.width / 2 : element.width / 2 } 
+        y={ tempSize ? tempSize.height / 2 : element.height / 2 } 
         dominantBaseline="middle" 
         textAnchor="middle"
         onMouseUp={ handleMouseUp }
@@ -96,14 +80,17 @@ export default function Element({ id }) {
       <Draggable
         disabled={!isDraggable}
         onStart={ e => e.stopPropagation() } 
+        onStop={ (e, data) => {
+          dispatch(updateElement(id, { 
+            width: Math.floor(data.x + 5), 
+            height: Math.floor(data.y + 5)
+          }))
+          setTempSize(null);
+        }}
         onDrag={ (e, data) => {
-          dispatch({ 
-            type: 'UPDATE_ELEMENT',
-            data: {
-              id,
-              width: Math.floor(data.x + 5),
-              height: Math.floor(data.y + 5),
-            }
+          setTempSize({ 
+            width: data.x + 5,
+            height: data.y + 5,
           })
         }}
         nodeRef={ anchorRef }

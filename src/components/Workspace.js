@@ -1,6 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { pan, zoom } from '../actions/workspaceActions.js';
+import { addPage } from '../actions/pageActions.js';
+import { cancelLink } from '../actions/linkActions.js';
 
 import Page from './Page.js';
 import Link from './Link.js';
@@ -22,14 +25,11 @@ export default function Workspace() {
     accept: 'page',
     drop(item, monitor) {
       const { x, y } = monitor.getSourceClientOffset();
-      dispatch({ 
-        type: 'ADD_PAGE',
-        data: {
-          type: item.tool,
-          x: (x - offset.x - 230) / scale,
-          y: (y - offset.y) / scale,
-        }
-      })
+      dispatch(addPage(
+        item.tool, 
+        (x - offset.x - 230) / scale, 
+        (y - offset.y) / scale
+      ))
     }
   })
 
@@ -38,13 +38,10 @@ export default function Workspace() {
     ref={ drop }
     onMouseMove={ e => {
       if(mouse.state === mouseState.workspaceDown) {
-        dispatch({ 
-          type: 'PAN_WORKSPACE',
-          offset: {
-            x: mouse.initialOffset.x - mouse.initialPointer.x + e.clientX, 
-            y: mouse.initialOffset.y - mouse.initialPointer.y + e.clientY 
-          }
-        });
+        dispatch(pan(
+          mouse.initialOffset.x - mouse.initialPointer.x + e.clientX, 
+          mouse.initialOffset.y - mouse.initialPointer.y + e.clientY 
+        ));
       }
     }}
     onMouseDown={ e => {
@@ -62,7 +59,7 @@ export default function Workspace() {
     onMouseUp={ e => {
       setMouse({ state: mouseState.up });
       if(e.button === 2) {
-        dispatch({ type: 'CANCEL_LINK' }) 
+        dispatch(cancelLink()) 
       }
     }}
     onMouseLeave={ e => {
@@ -71,7 +68,7 @@ export default function Workspace() {
     onWheel={ e => {
       if((e.deltaY < 0 && scale > 0.2) || (e.deltaY > 0 && scale < 2)) {
         const newScale = scale + e.deltaY * 0.01;
-        dispatch({ type: 'ZOOM_WORKSPACE', scale: newScale });
+        dispatch(zoom(newScale));
       }
     }}
     onContextMenu={ e => {
