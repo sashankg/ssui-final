@@ -48,15 +48,18 @@ code {
     height: 100%;
     display: flex;
     justify-content: center;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.runarea {
+  margin: auto;
+  position: relative;
 }
 
 .runpage {
-    margin: auto;
-    position: relative;
-    width: 500px;
-    height: 500px;
-    border-radius: 8px;
-    background: white;
+  border-radius: 8px;
+  background: white;
 }
 
 .page {
