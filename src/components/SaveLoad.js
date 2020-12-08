@@ -18,9 +18,13 @@ function Load() {
       	data: loadedState.pages
       });
       dispatch({
+      	type: 'LOAD_CONSTRAINTS',
+      	data: loadedState.constraints
+      });
+      dispatch({
       	type: 'CHANGE_PAGE',
       	data: {
-      		current_page: 0
+          current_page: 0
       	}
       });
       dispatch({
