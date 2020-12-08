@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Form, Dropdown, Image } from 'react-bootstrap';
 
-function LabelElement({ height, width, text, fontSize, destination }) {
+function LabelElement({ height, width, text, fontSize, fontColor, backgroundColor }) {
   return <div style={ { height: height, width: width } }>
     <div
-      style={ { fontSize: fontSize, textAlign: 'center' } }>
+      style={ { fontSize: fontSize, textAlign: 'center', backgroundColor: backgroundColor, color: fontColor } }>
       { text }
     </div>
   </div>
@@ -85,18 +85,20 @@ function DropdownElement({ height, width, text, items }) {
   return <Image src={imgSrc} style={ {height: height, width: width} } />
 }
 
-function CheckBoxElement({ text }) {
+function CheckBoxElement({ text, fontColor, backgroundColor }) {
   return <Form.Check 
     type="checkbox"
     label={ text }
+    style={ {color: fontColor, backgroundColor: backgroundColor} }
   />
 }
 
-function RadioElement({ text, group }) {
+function RadioElement({ text, group, fontColor, backgroundColor }) {
   return <Form.Check
     type="radio"
     name={ group }
     label={ text }
+    style={ {color: fontColor, backgroundColor: backgroundColor} }
   />
 }
 
@@ -115,6 +117,8 @@ function renderElement(element) {
             height={ element.height }
             text={ element.text }
             fontSize={ element.fontSize || 18 }
+            backgroundColor={ element.backgroundColor || 'transparent' }
+            fontColor={ element.fontColor || 'black' }
           />
         case 'dropdown':
           return <DropdownElement
@@ -144,11 +148,15 @@ function renderElement(element) {
         case 'checkbox':
           return <CheckBoxElement
             text={ element.text }
+            backgroundColor={ element.backgroundColor || 'transparent' }
+            fontColor={ element.fontColor || 'black' }
           />
         case 'radio':
           return <RadioElement
             text={ element.text }
             group={ element.group }
+            backgroundColor={ element.backgroundColor || 'transparent' }
+            fontColor={ element.fontColor || 'black' }
           />
         default:
           return <div>Placeholder</div>

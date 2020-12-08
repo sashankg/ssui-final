@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
+import { GithubPicker } from 'react-color'
 import elementTypes from '../data/elementTypes.js';
 import AT from '../data/attributeTypes.js';
 import { updateElement } from '../actions/elementActions.js';
@@ -17,6 +18,13 @@ for(const key in elementTypes) {
 function AttributeInput({ type, value, onChange, disabled }) {
   switch(type) {
     case AT.color:
+      return <GithubPicker
+        width="180px"
+        disabled={ disabled }
+        onChange={ color => onChange(color.hex) }
+        triangle="hide"
+        colors={ ['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB', '#EB9694', '#FAD0C3', '#FEF3BD', '#C1E1C5', '#BEDADC', '#C4DEF6', '#BED3F3', '#D4C4FB', '#000000', '#FFFFFF'] }
+      />
     case AT.list:
     case AT.string:
       return <Form.Control 

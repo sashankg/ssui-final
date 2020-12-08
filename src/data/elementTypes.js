@@ -10,9 +10,11 @@ const commonAttributes = {
 
 const elementTypes = {
   label: { 
-    name: 'Label', 
+    name: 'Label',
     ...commonAttributes,
     text: AT.string,
+    fontSize: AT.number,
+    fontColor: AT.color,
   }, 
   button: {
     name: 'Button',
@@ -46,11 +48,13 @@ const elementTypes = {
     name: 'Checkbox',
     ...commonAttributes,
     text: AT.string,
+    fontColor: AT.color,
   },
   radio: {
     name: 'Radio',
     ...commonAttributes,
     text: AT.string,
+    fontColor: AT.color,
     group: AT.string,
   }
 };
