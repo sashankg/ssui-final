@@ -73,6 +73,7 @@ export default function Workspace() {
     }}
     onContextMenu={ e => {
       e.preventDefault();
+      return false;
     }}
     onKeyPress={ e => {
       console.log(e.key)
