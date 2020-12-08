@@ -170,3 +170,17 @@ export function onUpdateElement(id, data, dispatch) {
   }
   recalculate(dispatch);
 }
+
+export function resizePageWidthConstraint(width) {
+  return dispatch => {
+    solver.suggestValue(variables['pageWidth'], width);
+    recalculate(dispatch);
+  }
+}
+
+export function resizePageHeightConstraint(height) {
+  return dispatch => {
+    solver.suggestValue(variables['pageHeight'], height);
+    recalculate(dispatch);
+  }
+}

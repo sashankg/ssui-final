@@ -20,8 +20,20 @@ export default function Link() {
   const { state, position } = useSelector(state => state.link);
   const mouse = useMousePosition();
 
+
   if(state === 'linking') {
+    const dx = mouse.x - position.x;
+    const dy = mouse.y - position.y;
     return <g>
+      <clipPath id="linkMask">
+        <ellipse 
+          cx={ position.x - 230} 
+          cy={ position.y } 
+          rx={ Math.sqrt(dx*dx + dy*dy) - 10 } 
+          ry={ Math.sqrt(dx*dx + dy*dy) - 10 } 
+          fill="black"
+        />
+      </clipPath>
       <line 
         x1={ position.x - 230 } 
         y1={ position.y }
@@ -29,6 +41,7 @@ export default function Link() {
         y2={ mouse.y }
         stroke="white"
         strokeWidth="7"
+        clipPath="url(#linkMask)"
       />
       <line 
         x1={ position.x - 230 } 
@@ -37,6 +50,7 @@ export default function Link() {
         y2={ mouse.y }
         stroke="blue"
         strokeWidth="3"
+        clipPath="url(#linkMask)"
       />
       <ellipse 
         cx={ position.x - 230 } 

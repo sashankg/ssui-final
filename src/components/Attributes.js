@@ -4,6 +4,10 @@ import { Form } from 'react-bootstrap';
 import elementTypes from '../data/elementTypes.js';
 import AT from '../data/attributeTypes.js';
 import { updateElement } from '../actions/elementActions.js';
+import { 
+    resizePageWidthConstraint, 
+    resizePageHeightConstraint,
+} from '../actions/constraintActions.js';
 
 let attributes = { };
 for(const key in elementTypes) {
@@ -93,6 +97,10 @@ function PageAttributes() {
               }
             })
           }}
+          onMouseUp={ e => {
+            console.log('hello');
+            dispatch(resizePageWidthConstraint(e.target.valueAsNumber));
+          }}
         />
       </Form.Group>
       <Form.Group controlId="formBasicRangeCustom">
@@ -110,6 +118,10 @@ function PageAttributes() {
                 page_height: e.target.valueAsNumber
               }
             })
+          }}
+          onMouseUp={ e => {
+            console.log('hello');
+            dispatch(resizePageHeightConstraint(e.target.valueAsNumber));
           }}
         />
       </Form.Group>

@@ -74,6 +74,9 @@ export default function Workspace() {
     onContextMenu={ e => {
       e.preventDefault();
     }}
+    onKeyPress={ e => {
+      console.log(e.key)
+    }}
   >
     <g transform={ `translate(${ offset.x }, ${ offset.y }) scale(${ scale })` }>
       { pages.allIds.map(id => {
