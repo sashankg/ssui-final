@@ -5,6 +5,7 @@ import pages from './pagesReducer.js';
 import elements from './elementsReducer.js';
 import selected from './selectedReducer.js';
 import link from './linkReducer.js';
+import modes from './modesReducer.js';
 
 export default combineReducers({
   pages,
@@ -12,4 +13,5 @@ export default combineReducers({
   workspace,
   selected,
   link,
+  modes
 });

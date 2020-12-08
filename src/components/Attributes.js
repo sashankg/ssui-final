@@ -9,12 +9,15 @@ for(const key in elementTypes) {
   attributes[key] = Object.keys(elementTypes[key]).filter(x => x !== 'name');
 }
 
-function AttributeInput({ type, value, onChange }) {
+function AttributeInput({ type, value, onChange, disabled }) {
   switch(type) {
     case AT.string:
-      return <Form.Control />
+      return <Form.Control 
+        disabled={ disabled }
+      />
     case AT.number:
       return <Form.Control
+        disabled={ disabled }
         onChange={ e => onChange(parseInt(e.target.value) || 0) } 
         type="number" 
         value={ value }
@@ -24,7 +27,7 @@ function AttributeInput({ type, value, onChange }) {
   }
 }
 
-function ElementAttributes() {
+function ElementAttributes({ isInteractable }) {
   const selected = useSelector(state => state.selected);
   const element = useSelector(state => state.elements.byId[selected.id]);
   const dispatch = useDispatch();
@@ -34,6 +37,7 @@ function ElementAttributes() {
       return <Form.Group key={ key }>
         <Form.Label>{ key }</Form.Label>
         <AttributeInput 
+          disabled = { !isInteractable }
           type={ elementTypes[element.type][key] } 
           value={ element[key]}
           onChange={ value => {
@@ -53,7 +57,8 @@ function ElementAttributes() {
 
 export default function Attributes() {
   const selected = useSelector(state => state.selected);
+  const isInteractable = useSelector(state => state.modes.active_mode) === 'create'
   return <div className="toolboxAttributes">
-    { selected.type === 'element' ? <ElementAttributes /> : null }
+    { selected.type === 'element' ? <ElementAttributes isInteractable={isInteractable} /> : null }
   </div>
 }
