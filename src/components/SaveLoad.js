@@ -9,7 +9,6 @@ function Load() {
   	const reader = new FileReader();
     reader.onload = () => {
     	const loadedState = JSON.parse(reader.result);
-    	console.log(loadedState);
       dispatch({
       	type: 'LOAD_ELEMENTS',
       	data: loadedState.elements
