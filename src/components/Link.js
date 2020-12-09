@@ -24,13 +24,14 @@ export default function Link() {
   if(state === 'linking') {
     const dx = mouse.x - position.x;
     const dy = mouse.y - position.y;
+      const clipRadius = Math.max(Math.sqrt(dx*dx + dy*dy) - 10, 0);
     return <g>
       <clipPath id="linkMask">
         <ellipse 
           cx={ position.x - 230} 
           cy={ position.y } 
-          rx={ Math.sqrt(dx*dx + dy*dy) - 10 } 
-          ry={ Math.sqrt(dx*dx + dy*dy) - 10 } 
+          rx={ clipRadius } 
+          ry={ clipRadius } 
           fill="black"
         />
       </clipPath>
