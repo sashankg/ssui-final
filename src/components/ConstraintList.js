@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ListGroup, Button } from 'react-bootstrap';
 
-function ConstraintItem({ constraint }) {
-    console.log('constraint: ', constraint)
+import { removeConstraint } from '../actions/constraintActions.js';
 
+function ConstraintItem({ id, constraint }) {
+    const dispatch = useDispatch()
     const [deleteVisible, setDeleteVisible] = useState(false)
 
     function getRelationshipSymbol(rel) {
@@ -46,6 +47,7 @@ function ConstraintItem({ constraint }) {
         { formattedStr }
         <Button
         className="constraint-delete-btn"
+        onClick={() => dispatch(removeConstraint({id: id, ...constraint}))}
         variant="danger"
         size="sm"
         style={{ visibility: deleteVisible ? 'visible' : 'hidden' }}
@@ -60,7 +62,7 @@ export default function ConstraintList() {
         <ListGroup>
         {
             Object.keys(constraints.byId).map(key =>
-                <ConstraintItem key={ key } constraint={ constraints.byId[key] } />
+                <ConstraintItem key={ key } id={ key } constraint={ constraints.byId[key] } />
             )
         }
         </ListGroup>

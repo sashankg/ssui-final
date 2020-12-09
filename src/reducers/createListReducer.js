@@ -15,6 +15,9 @@ export default function createListReducer(actions) {
       }
       case actions.remove: {
         const i = state.allIds.indexOf(action.data.id);
+        console.log('actions.remove state: ', state);
+        console.log('actions.remove action: ', action);
+        console.log('actions.remove i: ', i);
         const byId = { ...state.byId };
         delete byId[action.data.id];
         return {
