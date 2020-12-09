@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ListGroup, Button } from 'react-bootstrap';
 
 function ConstraintItem({ constraint }) {
     console.log('constraint: ', constraint)
+
+    const [deleteVisible, setDeleteVisible] = useState(false)
 
     function getRelationshipSymbol(rel) {
         switch (rel) {
@@ -37,9 +39,16 @@ function ConstraintItem({ constraint }) {
     formattedStr += ' ' + getRelationshipSymbol(constraint.relationship)
     formattedStr += ' ' + rightDescription
 
-    return <ListGroup.Item> 
+    return <ListGroup.Item
+        onMouseEnter={() => setDeleteVisible(true)}
+        onMouseLeave={() => setDeleteVisible(false)}
+        >
         { formattedStr }
-        <Button variant="danger" size="sm">X</Button>
+        <Button
+        variant="danger"
+        size="sm"
+        style={{ visibility: deleteVisible ? 'visible' : 'hidden' }}
+        >X</Button>
     </ListGroup.Item>
 }
 
