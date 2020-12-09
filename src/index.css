@@ -1,31 +1,31 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 .toolbox {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    height: 100vh;
-    z-index: 100;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 100vh;
+  z-index: 100;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
 }
 
 .toolboxElements {
-    overflow: scroll;
-    flex: 1;
-    margin-bottom: 12px;
+  overflow: scroll;
+  flex: 1;
+  margin-bottom: 12px;
 }
 
 .toolboxAttributes {
@@ -33,23 +33,28 @@ code {
   flex: 2;
 }
 
+.constraintlist-container {
+  overflow: scroll;
+  flex: 2;
+}
+
 .workspace {
-    background-color: lightgrey;
-    cursor: move;
-    overflow: hidden;
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  background-color: lightgrey;
+  cursor: move;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .runspace {
-    background-color: darkgrey;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    overflow: auto;
-    white-space: nowrap;
+  background-color: darkgrey;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .runarea {
@@ -63,12 +68,12 @@ code {
 }
 
 .page {
-    cursor: default;
+  cursor: default;
 }
 
 .pageBackground {
-    border-radius: 8px;
-    background: grey;
+  border-radius: 8px;
+  background: grey;
 }
 
 .toggle-mode {
