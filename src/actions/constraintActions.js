@@ -1,10 +1,8 @@
 import * as kiwi from 'kiwi.js';
-import { updateElement } from './elementActions.js';
 
 const solver = new kiwi.Solver();
 
 var variables = { }
-var constraints = { }
 
 variables['pageWidth'] = new kiwi.Variable('width');
 variables['pageHeight'] = new kiwi.Variable('height');
@@ -54,6 +52,7 @@ function toExpression({ value, type, id }, state) {
       case 'height':
       case 'bottom':
         return E(variables['pageHeight']);
+      default:
     }
   }
   else {
@@ -88,6 +87,7 @@ function toExpression({ value, type, id }, state) {
         solver.suggestValue(v, state.elements.byId[id].y);
         return v.plus(getVariable(id, 'h'));
       }
+      default:
     }
   }
 }
@@ -100,6 +100,7 @@ function toOp(relationship) {
       return kiwi.Operator.Le;
     case 'greater':
       return kiwi.Operator.Ge;
+    default:
   }
 }
 
@@ -136,10 +137,17 @@ export function addConstraint(first, second, relationship, offset) {
       offset,
       kiwi: c,
     }
-    dispatch({ type: 'ADD_CONSTRAINT', data: constraintData });
 
-    solver.addConstraint(c);
-    recalculate(dispatch);
+
+    try {
+      solver.addConstraint(c);
+      recalculate(dispatch);
+      console.log('hello')
+      dispatch({ type: 'ADD_CONSTRAINT', data: constraintData });
+    }
+    catch(e) {
+      window.alert('Invalid Constraint');
+    }
   }
 }
 
@@ -190,5 +198,24 @@ export function resizePageHeightConstraint(height) {
   return dispatch => {
     solver.suggestValue(variables['pageHeight'], height);
     recalculate(dispatch);
+  }
+}
+
+export function loadConstraints(constraints) {
+  return (dispatch, getState) => {
+    const state = getState();
+    for(var c in constraints.byId) {
+      const { first, second, offset, relationship } = constraints.byId[c];
+      const fe = toExpression(first, state).plus(parseFloat(offset));
+      const se = toExpression(second, state);
+      const kiwiConstraint = new kiwi.Constraint(fe, toOp(relationship), se, kiwi.Strength.required);
+      constraints.byId[c]['kiwi'] = kiwiConstraint;
+      solver.addConstraint(kiwiConstraint);
+    }   
+    recalculate(dispatch);
+    dispatch({
+      type: 'LOAD_CONSTRAINTS',
+      data: constraints
+    }); 
   }
 }

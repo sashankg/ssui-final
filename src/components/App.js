@@ -9,7 +9,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Toolbox from './Toolbox.js';
-import Workspace from './Workspace.js';
 import LinkModal from './LinkModal.js';
 
 import '../actions/constraintActions.js';

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { loadConstraints } from '../actions/constraintActions.js';
 
 function Load() {
 	const dispatch = useDispatch();
@@ -17,10 +18,7 @@ function Load() {
       	type: 'LOAD_PAGES',
       	data: loadedState.pages
       });
-      dispatch({
-      	type: 'LOAD_CONSTRAINTS',
-      	data: loadedState.constraints
-      });
+      dispatch(loadConstraints(loadedState.constraints));
       dispatch({
       	type: 'CHANGE_PAGE',
       	data: {

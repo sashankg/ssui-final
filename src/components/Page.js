@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { createSelector } from 'reselect';
 import { 
-  cancelLink,
   startLink,
   finishLink,
 } from '../actions/linkActions.js';
