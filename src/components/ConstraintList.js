@@ -4,6 +4,20 @@ import { ListGroup } from 'react-bootstrap';
 
 function ConstraintItem({ constraint }) {
     console.log('constraint: ', constraint)
+
+    function getRelationshipSymbol(rel) {
+        switch (rel) {
+            case 'equal':
+                return '='
+            case 'less':
+                return '<'
+            case 'greater':
+                return '>'
+            default:
+                return ''
+        }
+    }
+
     var firstElement = useSelector(state => state.elements.byId[constraint.first.id])
     var secondElement = useSelector(state => state.elements.byId[constraint.second.id])
 
@@ -13,6 +27,7 @@ function ConstraintItem({ constraint }) {
     } else {
         leftDescription += 'Page ' + firstElement.id
     }
+    leftDescription += ' ' + constraint.first.value
 
     var rightDescription = ''
     if (constraint.second.type === 'element') {
@@ -20,9 +35,10 @@ function ConstraintItem({ constraint }) {
     } else {
         rightDescription += 'Page ' + secondElement.id
     }
+    rightDescription += ' ' + constraint.second.value
     
     var formattedStr = leftDescription
-    formattedStr += ' ' + constraint.relationship
+    formattedStr += ' ' + getRelationshipSymbol(constraint.relationship)
     formattedStr += ' ' + rightDescription
 
     return <ListGroup.Item> 
@@ -32,6 +48,7 @@ function ConstraintItem({ constraint }) {
 
 export default function ConstraintList() {
     const constraints = useSelector(state => state.constraints)
+    console.log('ConstraintList: ', constraints)
     return <div className="constraintlist-container">
         <ListGroup>
         {
