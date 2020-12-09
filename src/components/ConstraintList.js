@@ -45,6 +45,8 @@ function ConstraintItem({ id, constraint }) {
         onMouseLeave={() => setDeleteVisible(false)}
         >
         { formattedStr }
+        <br />
+        Offset: { constraint.offset }
         <Button
         className="constraint-delete-btn"
         onClick={() => dispatch(removeConstraint({id: id, ...constraint}))}
