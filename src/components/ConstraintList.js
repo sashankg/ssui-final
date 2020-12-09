@@ -45,6 +45,7 @@ function ConstraintItem({ constraint }) {
         >
         { formattedStr }
         <Button
+        className="constraint-delete-btn"
         variant="danger"
         size="sm"
         style={{ visibility: deleteVisible ? 'visible' : 'hidden' }}
