@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { GithubPicker } from 'react-color'
+import { CirclePicker } from 'react-color'
 import elementTypes from '../data/elementTypes.js';
 import AT from '../data/attributeTypes.js';
 import { updateElement } from '../actions/elementActions.js';
@@ -18,12 +18,12 @@ for(const key in elementTypes) {
 function AttributeInput({ type, value, onChange, disabled }) {
   switch(type) {
     case AT.color:
-      return <GithubPicker
+      return <CirclePicker
         width="180px"
         disabled={ disabled }
         onChange={ color => onChange(color.hex) }
-        triangle="hide"
-        colors={ ['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB', '#EB9694', '#FAD0C3', '#FEF3BD', '#C1E1C5', '#BEDADC', '#C4DEF6', '#BED3F3', '#D4C4FB', '#000000', '#FFFFFF'] }
+        color={ value }
+        colors={ ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b", "#000000", 'transparent'] }
       />
     case AT.list:
     case AT.string:
