@@ -143,6 +143,14 @@ export function addConstraint(first, second, relationship, offset) {
   }
 }
 
+export function removeConstraint(constraint) {
+  return (dispatch, getState) => {
+    dispatch({ type: 'REMOVE_CONSTRAINT', data: constraint });
+    solver.removeConstraint(constraint.kiwi);
+    recalculate(dispatch);
+  }
+}
+
 function recalculate(dispatch) {
   solver.updateVariables();
   for(var key in variables) {

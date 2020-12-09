@@ -5,6 +5,7 @@ import { useDrag } from 'react-dnd';
 import elementTypes from '../data/elementTypes.js'
 
 import Attributes from './Attributes.js';
+import Constraints from './ConstraintList';
 
 const tools = Object.keys(elementTypes);
 
@@ -46,5 +47,7 @@ export default function Toolbox() {
       </div>
       <h2>Attributes</h2>
       <Attributes />
+      <h3>Constraints</h3>
+      <Constraints />
     </div>
 }
