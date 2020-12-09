@@ -56,15 +56,37 @@ function ConstraintItem({ id, constraint }) {
 }
 
 export default function ConstraintList() {
+    const selected = useSelector(state => state.selected);
     const constraints = useSelector(state => state.constraints)
-    console.log('ConstraintList: ', constraints)
-    return <div className="constraintlist-container">
-        <ListGroup>
-        {
-            Object.keys(constraints.byId).map(key =>
-                <ConstraintItem key={ key } id={ key } constraint={ constraints.byId[key] } />
+    if (selected.type === 'page') { // Show all constraints
+        return <div className="constraintlist-container">
+            <ListGroup>
+            {
+                Object.keys(constraints.byId).map(key =>
+                    <ConstraintItem key={ key } id={ key } constraint={ constraints.byId[key] } />
+                )
+                
+            }
+            </ListGroup>
+        </div>
+    } else { // Show only constraints involving selected object.
+        const selectedId = selected.id;
+        const filteredIDs = Object.entries(constraints.byId)
+            .filter(c =>
+                (c[1].first.type === 'element' && c[1].first.id === selectedId)
+                ||
+                (c[1].second.type === 'element' && c[1].second.id === selectedId)
             )
-        }
-        </ListGroup>
-    </div>
+        
+        return <div className="constraintlist-container">
+            <ListGroup>
+            {
+                filteredIDs.map(key => 
+                    <ConstraintItem key={ key[0] } id={ key[0] } constraint={ constraints.byId[key[0]] } />
+                )
+                
+            }
+            </ListGroup>
+        </div>
+    }
 }
