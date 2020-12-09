@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, Button } from 'react-bootstrap';
 
 function ConstraintItem({ constraint }) {
     console.log('constraint: ', constraint)
@@ -18,24 +18,20 @@ function ConstraintItem({ constraint }) {
         }
     }
 
-    var firstElement = useSelector(state => state.elements.byId[constraint.first.id])
-    var secondElement = useSelector(state => state.elements.byId[constraint.second.id])
+    const first = useSelector(state => constraint.first.type === 'page' ? 
+    state.pages.byId[constraint.first.id] : 
+    state.elements.byId[constraint.first.id]
+    )
 
-    var leftDescription = ''
-    if (constraint.first.type === 'element') {
-        leftDescription += firstElement.type + ' ' + firstElement.id
-    } else {
-        leftDescription += 'Page ' + firstElement.id
-    }
-    leftDescription += ' ' + constraint.first.value
+    const second = useSelector(state => constraint.second.type === 'page' ? 
+        state.pages.byId[constraint.second.id] : 
+        state.elements.byId[constraint.second.id]
+    );
 
-    var rightDescription = ''
-    if (constraint.second.type === 'element') {
-        rightDescription += secondElement.type + ' ' + secondElement.id
-    } else {
-        rightDescription += 'Page ' + secondElement.id
-    }
-    rightDescription += ' ' + constraint.second.value
+    var leftDescription = first.type ?? 'Page'
+    leftDescription += ' ' + first.id + ' ' + constraint.first.value
+    var rightDescription = second.type ?? 'Page' 
+    rightDescription += ' ' + second.id + ' ' + constraint.second.value
     
     var formattedStr = leftDescription
     formattedStr += ' ' + getRelationshipSymbol(constraint.relationship)
@@ -43,6 +39,7 @@ function ConstraintItem({ constraint }) {
 
     return <ListGroup.Item> 
         { formattedStr }
+        <Button variant="danger" size="sm">X</Button>
     </ListGroup.Item>
 }
 
