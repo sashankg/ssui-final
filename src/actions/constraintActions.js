@@ -119,14 +119,12 @@ const value2key = {
 }
 
 export function addConstraint(first, second, relationship, offset) {
-  console.log(first, second, relationship, offset);
   return (dispatch, getState) => {
     const state = getState();
 
     const fe = toExpression(first, state).plus(parseFloat(offset));
     const se = toExpression(second, state);
 
-    console.log(fe, se);
 
     const c = new kiwi.Constraint(fe, toOp(relationship), se, kiwi.Strength.required);
 
@@ -142,7 +140,6 @@ export function addConstraint(first, second, relationship, offset) {
     try {
       solver.addConstraint(c);
       recalculate(dispatch);
-      console.log('hello')
       dispatch({ type: 'ADD_CONSTRAINT', data: constraintData });
     }
     catch(e) {
@@ -164,7 +161,6 @@ function recalculate(dispatch) {
   for(var key in variables) {
     if(key !== 'pageHeight' && key !== 'pageWidth') {
       const variable = fromVarKey(key);
-      console.log(variables[key]);
       dispatch({
         type: 'UPDATE_ELEMENT',
         data: {
@@ -179,7 +175,6 @@ function recalculate(dispatch) {
 export function onUpdateElement(id, data, dispatch) {
   for(var key in data) {
     const variableKey = id + value2key[key]
-    console.log(variableKey);
     if(variables[variableKey]) {
       solver.suggestValue(variables[variableKey], data[key]);
     }

@@ -33,6 +33,33 @@ export default function Workspace() {
     }
   })
 
+  const selected = useSelector(state => state.selected);
+  React.useEffect(() => {
+    document.onkeyup = e => {
+      if(e.key === 'Backspace') {
+        dispatch({
+          type: 'DESELECT',
+        })
+        if(selected.type === 'page') {
+          dispatch({
+            type: 'REMOVE_PAGE',
+            data: {
+              id: selected.id
+            }
+          });
+        }
+        else if(selected.type === 'element') {
+          dispatch({
+            type: 'REMOVE_ELEMENT',
+            data: {
+              id: selected.id,
+            }
+          });
+        }
+      }
+    }
+  })
+
   return <svg 
     className="workspace" 
     ref={ drop }
@@ -74,9 +101,6 @@ export default function Workspace() {
     onContextMenu={ e => {
       e.preventDefault();
       return false;
-    }}
-    onKeyPress={ e => {
-      console.log(e.key)
     }}
   >
     <g transform={ `translate(${ offset.x }, ${ offset.y }) scale(${ scale })` }>
