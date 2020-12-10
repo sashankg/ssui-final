@@ -33,33 +33,33 @@ export default function Workspace() {
     }
   })
 
-  const selected = useSelector(state => state.selected);
-  React.useEffect(() => {
-    document.onkeyup = e => {
-        console.log(e.target.tagName)
-      if(e.target.tagName === 'BODY' && e.key === 'Backspace') {
-        dispatch({
-          type: 'DESELECT',
-        })
-        if(selected.type === 'page') {
-          dispatch({
-            type: 'REMOVE_PAGE',
-            data: {
-              id: selected.id
-            }
-          });
-        }
-        else if(selected.type === 'element') {
-          dispatch({
-            type: 'REMOVE_ELEMENT',
-            data: {
-              id: selected.id,
-            }
-          });
-        }
-      }
-    }
-  })
+  // const selected = useSelector(state => state.selected);
+  // React.useEffect(() => {
+  //   document.onkeyup = e => {
+  //       console.log(e.target.tagName)
+  //     if(e.target.tagName === 'BODY' && e.key === 'Backspace') {
+  //       dispatch({
+  //         type: 'DESELECT',
+  //       })
+  //       if(selected.type === 'page') {
+  //         dispatch({
+  //           type: 'REMOVE_PAGE',
+  //           data: {
+  //             id: selected.id
+  //           }
+  //         });
+  //       }
+  //       else if(selected.type === 'element') {
+  //         dispatch({
+  //           type: 'REMOVE_ELEMENT',
+  //           data: {
+  //             id: selected.id,
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  // })
 
   return <svg 
     className="workspace" 
