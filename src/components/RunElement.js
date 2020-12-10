@@ -4,12 +4,10 @@ import { useDispatch } from 'react-redux';
 import { Button, Form, Dropdown, Image } from 'react-bootstrap';
 
 function LabelElement({ height, width, text, fontSize, fontColor, backgroundColor }) {
-  return <div style={ { height: height, width: width } }>
-    <div
-      style={ { fontSize: fontSize, textAlign: 'center', backgroundColor: backgroundColor, color: fontColor } }>
+  return <div
+        style={ { fontSize: fontSize, textAlign: 'center', backgroundColor: backgroundColor, color: fontColor, width, height, display: 'flex', flexDirection: 'column', justifyContent: 'center', } }>
       { text }
     </div>
-  </div>
 }
 
 function ButtonElement({ height, width, text, destination }) {
