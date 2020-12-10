@@ -22,7 +22,7 @@ export default function Runspace() {
         <Form.Control
             className="page-select"
             as="select"
-            defaultValue={current_page}
+            value={current_page}
             onChange={(e) => {
                 dispatch({
                     type: 'CHANGE_PAGE',
