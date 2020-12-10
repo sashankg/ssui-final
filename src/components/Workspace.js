@@ -36,7 +36,7 @@ export default function Workspace() {
   const selected = useSelector(state => state.selected);
   React.useEffect(() => {
     document.onkeyup = e => {
-      if(e.key === 'Backspace') {
+      if(e.target.tagName === 'body' && e.key === 'Backspace') {
         dispatch({
           type: 'DESELECT',
         })
