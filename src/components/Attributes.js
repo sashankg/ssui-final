@@ -74,7 +74,7 @@ function ElementAttributes({ isInteractable }) {
         <AttributeInput 
           disabled = { !isInteractable }
           type={ elementTypes[element.type][key] } 
-          value={ element[key]}
+          value={ element[key] || "" }
           onChange={ value => {
             dispatch(updateElement(selected.id, { [key]: value }))
           }}
